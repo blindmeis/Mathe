@@ -38,20 +38,11 @@ namespace Mathe1
             Module.Add(add);
             Module.Add(sub);
 
-            Auswertung = new StatistikViemodel();
+            _dialogService = new WpfUIDialogWindowService();
+            Auswertung = new StatistikViemodel(_dialogService);
 
             _lazyStatistikCommand = new Lazy<DelegateCommand>(() => new DelegateCommand(StatistikCommandExecute, CanStatistikCommandExecute));
-            _dialogService = new WpfUIDialogWindowService();
-#if DEBUG
-            //var tmp = new ResourceDictionary(){Source = new Uri(@"..\..\Resources\Icons.xaml",UriKind.RelativeOrAbsolute)};
 
-            //foreach (var key in tmp.Keys)
-            //{
-            //    var canvas = (Canvas)tmp[key];
-
-            //   CreateSaveBitmap(canvas, @"..\..\..\..\Images\" + key + ".png");
-            //}
-#endif
         }
 
         public string Titel { get; private set; }
@@ -72,28 +63,7 @@ namespace Mathe1
             if(!CanStatistikCommandExecute())
                 return;
 
-            _dialogService.ShowDialog("Auswertung", Auswertung, Properties.Settings.Default, "HeightStatistik", "WidthStatistik", 400, 600, 800, 600);
-        }
-
-        private void CreateSaveBitmap(Canvas canvas, string filename)
-        {
-            RenderTargetBitmap renderBitmap = new RenderTargetBitmap(
-             (int)canvas.Width, (int)canvas.Height,
-             96d, 96d, PixelFormats.Pbgra32);
-            // needed otherwise the image output is black
-            canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
-            canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
-
-            renderBitmap.Render(canvas);
-
-            //JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
-
-            using (FileStream file = File.Create(filename))
-            {
-                encoder.Save(file);
-            }
+            _dialogService.ShowDialog("Auswertung", Auswertung, Properties.Settings.Default, "HeightStatistik", "WidthStatistik", 400, 600, 800, 700);
         }
 
     }

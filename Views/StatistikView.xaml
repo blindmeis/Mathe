@@ -18,12 +18,16 @@
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Col0"/>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Col1"/>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="Col2"/>
-                                <ColumnDefinition Width="*" SharedSizeGroup="Col3"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col3"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col4"/>
+                                <ColumnDefinition Width="*" SharedSizeGroup="Col5"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" Text="{Binding Timestamp}"/>
                             <TextBlock Grid.Column="1" Text="{Binding AufgabenTyp}" Margin="10,0,0,0"/>
-                            <ItemsControl Grid.Column="2" ItemsSource="{Binding Ergebnisse}" Margin="10,0,0,0">
+                            <ProgressBar Grid.Column="2" Value="{Binding Schwierigkeit}" Margin="10,0,0,0"
+                                         Maximum="2"  Height="5" Width="20" SmallChange="1"/>
+                            <ItemsControl Grid.Column="3" ItemsSource="{Binding Ergebnisse}" Margin="10,0,0,0">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>
@@ -79,9 +83,19 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <Button Grid.Column="3" VerticalAlignment="Center" Margin="15,0,0,0"
+                            
+                            <Button Grid.Column="4" VerticalAlignment="Center" Margin="15,0,0,0"
+                                    Command="{Binding DataContext.ShowDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type views:IDataContextMarkerStatistik}}}"
+                                    CommandParameter="{Binding .}"
+                                    ToolTip="Aufgaben Detail anschauen">
+                                <Viewbox Width="16" Height="16" >
+                                    <images:Details/>
+                                </Viewbox>
+                            </Button>
+                            <Button Grid.Column="5" VerticalAlignment="Center" Margin="5,0,0,0"
                                     Command="{Binding DataContext.DeleteStatistikEintragCommand, RelativeSource={RelativeSource AncestorType={x:Type views:IDataContextMarkerStatistik}}}"
-                                    CommandParameter="{Binding .}">
+                                    CommandParameter="{Binding .}"
+                                    ToolTip="Eintrag löschen">
                                 <Viewbox Width="16" Height="16">
                                     <images:Delete/>
                                 </Viewbox>

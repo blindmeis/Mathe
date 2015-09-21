@@ -71,6 +71,13 @@
     <Compile Include="Images\Delete.xaml.cs">
       <DependentUpon>Delete.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Images\Details.xaml.cs">
+      <DependentUpon>Details.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewmodel\StatistikAufgabenDetailsViewmodel.cs" />
+    <Compile Include="Views\StatistikAufgabenDetails.xaml.cs">
+      <DependentUpon>StatistikAufgabenDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StatistikView.xaml.cs">
       <DependentUpon>StatistikView.xaml</DependentUpon>
     </Compile>
@@ -140,6 +147,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Images\Details.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Images\Falsch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AufgabeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatistikAufgabenDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

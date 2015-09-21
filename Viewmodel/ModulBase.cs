@@ -41,8 +41,11 @@ namespace Mathe1.Viewmodel
             {
                 if(_schwierigkeit==value)
                     return;
+
                 _schwierigkeit = value;
+
                 OnPropertyChanged();
+
                 SetSchwierigkeitToSettings(value);
                 CreateAufgaben();
             }
@@ -55,7 +58,7 @@ namespace Mathe1.Viewmodel
 
         private bool CanNeueAufgabenCommandExecute()
         {
-            return true;
+            return Aufgaben.All(x => x.ObLocked);
         }
 
         private void NeueAufgabenCommandExecute()
@@ -83,31 +86,14 @@ namespace Mathe1.Viewmodel
                 aufgabe.ValidateResult();
             }
 
-            if (Aufgaben.All(x => x.ObLocked) && !ObStatistikGeschrieben)
+            if (Aufgaben.All(x => x.ObLocked))
             {
-                //Statistik schreiben
-                var ergebnisse = new Dictionary<int, AuswertungAufgabe>();
-                var max = Aufgaben.Count;
-                var maxVersuche = Aufgaben.First().MaxVersuche;
-
-                for (int i = 1; i <= maxVersuche; i++)
-                {
-                    var geschafftBeiXtenVersuch = Aufgaben.Count(x => x.ObSuccess.GetValueOrDefault(false) && x.VersucheCounter.Count >= maxVersuche-i);
-                    ergebnisse.Add(i, new AuswertungAufgabe(geschafftBeiXtenVersuch, max));
-
-                    if (geschafftBeiXtenVersuch == max)
-                        break;
-                }
-
-                OnStatistikEvent(new StatistikItem(_typ,ergebnisse));
-
-                ObStatistikGeschrieben = true;
+                OnStatistikEvent(new StatistikItem(Aufgaben));
             }
         }
 
         protected void CreateAufgaben()
         {
-            ObStatistikGeschrieben = false;
             Aufgaben.Clear();
 
             for (int i = 0; i < 10; i++)
@@ -123,8 +109,6 @@ namespace Mathe1.Viewmodel
                 Aufgaben.Add(aufgabe);
             }
         }
-
-        private bool ObStatistikGeschrieben { get; set; }
 
         protected virtual void OnStatistikEvent(StatistikItem auswertung)
         {

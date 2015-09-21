@@ -31,6 +31,14 @@ namespace Mathe1.Common
         ObservableCollection<Versuche> VersucheCounter { get; }
 
         int MaxVersuche { get; }
+
+
+        /// <summary>
+        /// 0 = Einfach
+        /// 1 = Normal
+        /// 2 = Schwer
+        /// </summary>
+        int Schwierigkeit { get; }
     }
        
 }

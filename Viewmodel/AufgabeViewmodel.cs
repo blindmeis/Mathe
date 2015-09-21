@@ -9,7 +9,8 @@ using Mathe1.Common;
 
 namespace Mathe1.Viewmodel
 {
-    class AufgabeViewmodel : ViewmodelBase, IAufgabe
+    [Serializable]
+    public class AufgabeViewmodel : ViewmodelBase, IAufgabe
     {
         private static readonly Random Zufall = new Random();
         
@@ -26,11 +27,18 @@ namespace Mathe1.Viewmodel
         private string _lastValidatedOperator2;
         private string _lastValidatedResult;
 
+        public AufgabeViewmodel()
+        {
+            
+        }
+
         public AufgabeViewmodel(Operationen operation, int schwierigkeit)
         {
             Zahlenraum = GetZahlenraumFromSchwierigkeit(schwierigkeit);
 
             Operation = operation;
+
+            Schwierigkeit = schwierigkeit;
 
             Operator1 = Zufall.Next(Zahlenraum);
 
@@ -38,7 +46,7 @@ namespace Mathe1.Viewmodel
 
             VerschiebeUnbekannte(schwierigkeit);
 
-            MaxVersuche = schwierigkeit == 2 ? 3 : 2;
+            MaxVersuche = GetMaxVersuche(schwierigkeit);
 
             VersucheCounter = new ObservableCollection<Versuche>();
 
@@ -135,7 +143,22 @@ namespace Mathe1.Viewmodel
                 case Operationen.Addition:
                     return schwierigkeit == 0 ? 10 : (schwierigkeit == 1 ? 20 : 50);
                 case Operationen.Subtraktion:
-                    return schwierigkeit == 0 ? 10 : (schwierigkeit == 1 ? 20 : 50);
+                    return schwierigkeit == 0 ? 15 : (schwierigkeit == 1 ? 25 : 50);
+            }
+
+            return 0;
+        }
+
+        private int GetMaxVersuche(int schwierigkeit)
+        {
+            switch (schwierigkeit)
+            {
+                case 0:
+                    return 1;
+                case 1:
+                    return 2;
+                case 2:
+                    return 3;
             }
 
             return 0;
@@ -209,6 +232,8 @@ namespace Mathe1.Viewmodel
         }
 
         public Operationen Operation { get; set; }
+        
+        public int Schwierigkeit { get; set; }
 
         public int? Operator2
         {

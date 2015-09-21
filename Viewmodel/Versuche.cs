@@ -7,6 +7,7 @@ using Mathe1.Common;
 
 namespace Mathe1.Viewmodel
 {
+    [Serializable]
     public class Versuche: ViewmodelBase
     {
     }

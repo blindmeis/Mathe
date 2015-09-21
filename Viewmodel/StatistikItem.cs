@@ -30,14 +30,32 @@ namespace Mathe1.Viewmodel
     public class StatistikItem: ViewmodelBase
     {
         public Operationen AufgabenTyp { get; set; }
+        public int Schwierigkeit { get; set; }
+        public IList<IAufgabe> Aufgaben { get; set; }
         public Dictionary<int, AuswertungAufgabe> Ergebnisse { get; set; }
         public DateTime Timestamp { get; set; }
 
-        public StatistikItem(Operationen aufgabenTyp, Dictionary<int, AuswertungAufgabe> ergebnisse)
+        public StatistikItem(IList<IAufgabe> aufgaben)
         {
             Timestamp = DateTime.Now;
-            AufgabenTyp = aufgabenTyp;
-            Ergebnisse = ergebnisse;
+            AufgabenTyp = aufgaben.First().Operation;
+            Schwierigkeit = aufgaben.First().Schwierigkeit;
+            Aufgaben = aufgaben;
+
+
+            //Statistik schreiben
+            Ergebnisse = new Dictionary<int, AuswertungAufgabe>();
+            var max = Aufgaben.Count;
+            var maxVersuche = Aufgaben.First().MaxVersuche;
+
+            for (int i = 1; i <= maxVersuche; i++)
+            {
+                var geschafftBeiXtenVersuch = Aufgaben.Count(x => x.ObSuccess.GetValueOrDefault(false) && x.VersucheCounter.Count >= maxVersuche - i);
+                Ergebnisse.Add(i, new AuswertungAufgabe(geschafftBeiXtenVersuch, max));
+
+                if (geschafftBeiXtenVersuch == max)
+                    break;
+            }
         }
     }
 

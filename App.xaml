@@ -43,6 +43,10 @@
                 <views:StatistikView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodel:StatistikAufgabenDetailsViewmodel}">
+                <views:StatistikAufgabenDetails/>
+            </DataTemplate>
+
         </ResourceDictionary>
 
        
