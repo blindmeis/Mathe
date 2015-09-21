@@ -1,0 +1,51 @@
+﻿<Application x:Class="Mathe1.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewmodel="clr-namespace:Mathe1.Viewmodel"
+             xmlns:views="clr-namespace:Mathe1.Views"
+             xmlns:common="clr-namespace:Mathe1.Common"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <common:BoolToVisibilityConverter x:Key="TrueIfVisibleConverter" Inverted="False" Not="False" />
+            <common:BoolToVisibilityConverter x:Key="TrueIfNotVisibleConverter" Inverted="False" Not="True" />
+            <common:BoolToVisibilityConverter x:Key="VisibleIfTrueConverter" Inverted="True" Not="False" />
+            <common:BoolToVisibilityConverter x:Key="VisibleIfNotTrueConverter" Inverted="True" Not="True" />
+            <common:ManyBoolToBoolMultiConverter x:Key="AnyBoolTrueMultiConverter" AllTrue="False"/>
+            <common:ManyBoolToBoolMultiConverter x:Key="AllBoolTrueMultiConverter" AllTrue="True"/>
+            <common:InvertConverter x:Key="InvertConverter" />
+
+            <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="common:FocusBorderAdornerBehavior.IsEnabledForStyle" Value="True"/>
+            </Style>
+
+            <DataTemplate DataType="{x:Type viewmodel:AdditionModul}">
+                <views:ModulView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodel:SubtraktionModul}">
+                <views:ModulView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodel:AufgabeViewmodel}">
+                <views:AufgabeView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodel:StatistikViemodel}">
+                <views:StatistikView/>
+            </DataTemplate>
+
+        </ResourceDictionary>
+
+       
+         
+    </Application.Resources>
+</Application>

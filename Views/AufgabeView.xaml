@@ -1,0 +1,188 @@
+﻿<UserControl x:Class="Mathe1.Views.AufgabeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:common="clr-namespace:Mathe1.Common"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:images="clr-namespace:Mathe1.Images"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
+    <UserControl.Resources>
+        <Style x:Key="StyleInputTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="IsEnabled" Value="True"/>
+            <Setter Property="MinWidth" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ObLocked}" Value="true">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="StyleWatermark" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Opacity" Value="0.6"/>
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="Margin" Value="5,6,0,0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Op1"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ColTyp"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Op2"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ColIstGleich"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Result"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ColSuccess"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ColLock"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="LockResult"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Text="{Binding Operator1, UpdateSourceTrigger=PropertyChanged}" 
+                 Style="{StaticResource StyleInputTextBox}"
+                 Visibility="{Binding Path=ObOperator1Unbekannt, Converter={StaticResource VisibleIfTrueConverter}}">
+                <i:Interaction.Behaviors>
+                    <common:TextBoxInputBehavior InputMode="DigitInput" />
+                    <common:TextBoxWatermarkBehavior Label="{Binding LastValidatedOperator1}" LabelStyle="{StaticResource StyleWatermark}"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Label Grid.Column="0" Content="{Binding Operator1}"
+               Visibility="{Binding Path=ObOperator1Unbekannt, Converter={StaticResource VisibleIfNotTrueConverter}}"/>
+
+            <Label Grid.Column="1">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Operation}" Value="{x:Static common:Operationen.Addition}">
+                                <Setter Property="Content" Value="+"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Operation}" Value="{x:Static common:Operationen.Subtraktion}">
+                                <Setter Property="Content" Value="-"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <TextBox Grid.Column="2" Text="{Binding Operator2, UpdateSourceTrigger=PropertyChanged}" 
+                 Style="{StaticResource StyleInputTextBox}"
+                 Visibility="{Binding Path=ObOperator2Unbekannt, Converter={StaticResource VisibleIfTrueConverter}}">
+                <i:Interaction.Behaviors>
+                    <common:TextBoxInputBehavior InputMode="DigitInput" />
+                    <common:TextBoxWatermarkBehavior Label="{Binding LastValidatedOperator2}" LabelStyle="{StaticResource StyleWatermark}"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Label Grid.Column="2" Content="{Binding Operator2}"
+               Visibility="{Binding Path=ObOperator2Unbekannt, Converter={StaticResource VisibleIfNotTrueConverter}}"/>
+
+            <Label Grid.Column="3" Content="="/>
+
+            <TextBox Grid.Column="4" 
+                     Text="{Binding Result, UpdateSourceTrigger=PropertyChanged}" 
+                 Style="{StaticResource StyleInputTextBox}"
+                 Visibility="{Binding Path=ObResultUnbekannt, Converter={StaticResource VisibleIfTrueConverter}}">
+                <i:Interaction.Behaviors>
+                    <common:TextBoxInputBehavior InputMode="DigitInput" />
+                    <common:TextBoxWatermarkBehavior Label="{Binding LastValidatedResult}" LabelStyle="{StaticResource StyleWatermark}"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Label Grid.Column="4" Content="{Binding Result}"
+               Visibility="{Binding Path=ObResultUnbekannt, Converter={StaticResource VisibleIfNotTrueConverter}}"/>
+
+            <Label Grid.Column="5" VerticalContentAlignment="Center" Margin="5,0,0,0">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ObSuccess}" Value="{x:Null}">
+                                <Setter Property="Content" Value=""/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ObSuccess}" Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Viewbox Height="16" Width="16">
+                                            <images:Richtig/>
+                                        </Viewbox>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ObSuccess}" Value="False">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Viewbox Height="16" Width="16">
+                                            <images:Falsch/>
+                                        </Viewbox>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <Label Grid.Column="6" VerticalContentAlignment="Center" Margin="5,0,0,0">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ObLocked}" Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Viewbox Height="16" Width="16">
+                                            <images:Locked/>
+                                        </Viewbox>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ObLocked}" Value="False">
+                                <Setter Property="Content" Value=""/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <Label Grid.Column="7" Margin="20,0,0,0" 
+               VerticalContentAlignment="Center" 
+               Content="{Binding LockResult, Mode=OneWay}"
+                   Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={StaticResource VisibleIfTrueConverter}}">
+                <Label.IsEnabled>
+                    <MultiBinding Converter="{StaticResource AllBoolTrueMultiConverter}">
+                        <Binding Path="ObLocked" />
+                        <Binding Path="ObFalsch" />
+                    </MultiBinding>
+                </Label.IsEnabled>
+            </Label>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="10,0,15,0" HorizontalAlignment="Right">
+            <ItemsControl ItemsSource="{Binding VersucheCounter}"
+                          Focusable="False" IsTabStop="False"
+                          VerticalContentAlignment="Center" VerticalAlignment="Center">
+                <ItemsControl.ToolTip>
+                    <ToolTip Content="{Binding Path=VersucheCounter.Count}"
+                         ContentStringFormat="{}{0} Versuch(e)"/>
+                </ItemsControl.ToolTip>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Viewbox Height="12" Width="12" Focusable="False">
+                            <images:Counter Focusable="False"/>
+                        </Viewbox>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+
+</UserControl>
