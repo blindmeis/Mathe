@@ -21,8 +21,8 @@ namespace Mathe1
 {
     class MainWindowViewmodel : ViewmodelBase
     {
-        private Lazy<DelegateCommand> _lazyStatistikCommand;
-        private WpfUIDialogWindowService _dialogService;
+        private readonly Lazy<DelegateCommand> _lazyStatistikCommand;
+        private readonly WpfUIDialogWindowService _dialogService;
 
         public MainWindowViewmodel()
         {
@@ -35,10 +35,15 @@ namespace Mathe1
             var sub = new SubtraktionModul();
             sub.StatistikEvent += (sender, args) => Auswertung.Add(args.Auswertung);
 
+            var mal = new MultiplikationModul();
+            mal.StatistikEvent += (sender, args) => Auswertung.Add(args.Auswertung);
+
             Module.Add(add);
             Module.Add(sub);
+            Module.Add(mal);
 
             _dialogService = new WpfUIDialogWindowService();
+
             Auswertung = new StatistikViemodel(_dialogService);
 
             _lazyStatistikCommand = new Lazy<DelegateCommand>(() => new DelegateCommand(StatistikCommandExecute, CanStatistikCommandExecute));

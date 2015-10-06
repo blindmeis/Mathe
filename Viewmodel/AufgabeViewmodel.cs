@@ -34,12 +34,12 @@ namespace Mathe1.Viewmodel
 
         public AufgabeViewmodel(Operationen operation, int schwierigkeit)
         {
-            Zahlenraum = GetZahlenraumFromSchwierigkeit(schwierigkeit);
-
             Operation = operation;
 
             Schwierigkeit = schwierigkeit;
 
+            Zahlenraum = GetZahlenraumFromSchwierigkeit(schwierigkeit);
+            
             Operator1 = Zufall.Next(Zahlenraum);
 
             CreateOperator2();
@@ -144,6 +144,8 @@ namespace Mathe1.Viewmodel
                     return schwierigkeit == 0 ? 10 : (schwierigkeit == 1 ? 20 : 50);
                 case Operationen.Subtraktion:
                     return schwierigkeit == 0 ? 15 : (schwierigkeit == 1 ? 25 : 50);
+                case Operationen.Multiplikation:
+                    return 10;
             }
 
             return 0;
@@ -181,6 +183,14 @@ namespace Mathe1.Viewmodel
                     {
                         Operator2 = Zufall.Next(Zahlenraum);
                         if (CheckResult == null || CheckResult < 0)
+                            Operator2 = null;
+                    }
+                    break;
+                case Operationen.Multiplikation:
+                    while (Operator2 == null)
+                    {
+                        Operator2 = Zufall.Next(Zahlenraum);
+                        if (CheckResult == null)
                             Operator2 = null;
                     }
                     break;
@@ -273,7 +283,10 @@ namespace Mathe1.Viewmodel
                         if (Operator1.HasValue && Operator2.HasValue)
                             return Operator1 - Operator2;
                         break;
-
+                    case Operationen.Multiplikation:
+                        if (Operator1.HasValue && Operator2.HasValue)
+                            return Operator1 * Operator2;
+                        break;
                 }
 
                 return null;
@@ -377,6 +390,14 @@ namespace Mathe1.Viewmodel
                             LockResult = Operator1 - Result;
                         if (ObResultUnbekannt)
                             LockResult = Operator1 - Operator2;
+                        break;
+                    case Operationen.Multiplikation:
+                        if (ObOperator1Unbekannt)
+                            LockResult = Result / Operator2;
+                        if (ObOperator2Unbekannt)
+                            LockResult = Result / Operator1;
+                        if (ObResultUnbekannt)
+                            LockResult = Operator1 * Operator2;
                         break;
                 }
                 OnPropertyChanged("ObFalsch");

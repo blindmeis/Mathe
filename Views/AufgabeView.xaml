@@ -67,6 +67,9 @@
                             <DataTrigger Binding="{Binding Operation}" Value="{x:Static common:Operationen.Subtraktion}">
                                 <Setter Property="Content" Value="-"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Operation}" Value="{x:Static common:Operationen.Multiplikation}">
+                                <Setter Property="Content" Value="x"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Label.Style>

@@ -9,6 +9,7 @@ namespace Mathe1.Common
     public enum Operationen
     {
         Addition,
-        Subtraktion
+        Subtraktion,
+        Multiplikation
     }
 }

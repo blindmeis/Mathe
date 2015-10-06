@@ -22,7 +22,7 @@
                 controls:TabControlHelper.IsUnderlined="True">
         <TabControl.ItemTemplate>
             <DataTemplate>
-                <TextBlock Text="{Binding Displayname}" Margin="0,0,3,0"/>
+                <TextBlock Text="{Binding Displayname}" Margin="0,0,3,0" FontSize="18"/>
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>

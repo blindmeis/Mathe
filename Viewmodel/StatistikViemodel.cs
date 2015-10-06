@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 using Mathe1.Common;
 
@@ -13,11 +15,14 @@ namespace Mathe1.Viewmodel
     {
         private readonly WpfUIDialogWindowService _dialogService;
         private readonly Lazy<DelegateCommand<StatistikItem>> _lazyDeleteStatistikEintragCommand; 
-        private readonly Lazy<DelegateCommand<StatistikItem>> _lazyShowDetailsStatistikEintragCommand; 
+        private readonly Lazy<DelegateCommand<StatistikItem>> _lazyShowDetailsStatistikEintragCommand;
+        private readonly ICollectionView _view; 
 
         public StatistikViemodel(WpfUIDialogWindowService dialogService)
         {
             Auswertung = new ObservableCollection<StatistikItem>(StatistikReader.Read());
+            _view = CollectionViewSource.GetDefaultView(Auswertung);
+            _view.SortDescriptions.Add(new SortDescription("Timestamp",ListSortDirection.Descending));
 
             _dialogService = dialogService;
             _lazyDeleteStatistikEintragCommand = new Lazy<DelegateCommand<StatistikItem>>(()=> new DelegateCommand<StatistikItem>(DeleteExecute, CanDeleteExecute));
@@ -30,6 +35,7 @@ namespace Mathe1.Viewmodel
         public void Add(StatistikItem auswertung)
         {
             Auswertung.Add(auswertung);
+            _view.Refresh();
             StatistikWriter.Write(new Statistik(Auswertung.ToList()));
         }
 
@@ -46,6 +52,7 @@ namespace Mathe1.Viewmodel
                 return;
 
             Auswertung.Remove(obj);
+            _view.Refresh();
             StatistikWriter.Write(new Statistik(Auswertung.ToList()));
         }
 

@@ -74,5 +74,17 @@ namespace Mathe1.Properties {
                 this["WidthStatistik"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int GradMultiplikation {
+            get {
+                return ((int)(this["GradMultiplikation"]));
+            }
+            set {
+                this["GradMultiplikation"] = value;
+            }
+        }
     }
 }

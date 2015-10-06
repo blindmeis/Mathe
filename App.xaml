@@ -34,7 +34,11 @@
             <DataTemplate DataType="{x:Type viewmodel:SubtraktionModul}">
                 <views:ModulView/>
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type viewmodel:MultiplikationModul}">
+                <views:ModulView/>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewmodel:AufgabeViewmodel}">
                 <views:AufgabeView/>
             </DataTemplate>
