@@ -14,15 +14,15 @@ namespace Mathe1.Viewmodel
         public event EventHandler<StatistikEventArgs> StatistikEvent;
 
         private readonly Operationen _typ;
-        private readonly Lazy<DelegateCommand> _lazyNeueAufgabenCommand; 
-        private readonly Lazy<DelegateCommand> _lazyPrüfenCommand;
+        private readonly Lazy<Prism.Commands.DelegateCommand> _lazyNeueAufgabenCommand;
+        private readonly Lazy<Prism.Commands.DelegateCommand> _lazyPrüfenCommand;
         private int _schwierigkeit;
 
         protected ModulBase(Operationen typ, int schwierigkeit)
         {
             _typ = typ;
-            _lazyNeueAufgabenCommand = new Lazy<DelegateCommand>(() => new DelegateCommand(NeueAufgabenCommandExecute, CanNeueAufgabenCommandExecute));
-            _lazyPrüfenCommand = new Lazy<DelegateCommand>(() => new DelegateCommand(PrüfenCommandExecute, CanPrüfenCommandExecute));
+            _lazyNeueAufgabenCommand = new Lazy<Prism.Commands.DelegateCommand>(() => new Prism.Commands.DelegateCommand(NeueAufgabenCommandExecute, CanNeueAufgabenCommandExecute));
+            _lazyPrüfenCommand = new Lazy<Prism.Commands.DelegateCommand>(() => new Prism.Commands.DelegateCommand(PrüfenCommandExecute, CanPrüfenCommandExecute));
 
             Aufgaben = new ObservableCollection<IAufgabe>();
             Schwierigkeit = schwierigkeit;
