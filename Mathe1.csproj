@@ -77,6 +77,7 @@
     <Compile Include="Images\Details.xaml.cs">
       <DependentUpon>Details.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Viewmodel\DivisionModul.cs" />
     <Compile Include="Viewmodel\MultiplikationModul.cs" />
     <Compile Include="Viewmodel\StatistikAufgabenDetailsViewmodel.cs" />
     <Compile Include="Views\StatistikAufgabenDetails.xaml.cs">

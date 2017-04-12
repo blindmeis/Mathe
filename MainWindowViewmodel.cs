@@ -38,9 +38,13 @@ namespace Mathe1
             var mal = new MultiplikationModul();
             mal.StatistikEvent += (sender, args) => Auswertung.Add(args.Auswertung);
 
+            var durch = new DivisionModul();
+            durch.StatistikEvent += (sender, args) => Auswertung.Add(args.Auswertung);
+
             Module.Add(add);
             Module.Add(sub);
             Module.Add(mal);
+            Module.Add(durch);
 
             _dialogService = new WpfUIDialogWindowService();
 

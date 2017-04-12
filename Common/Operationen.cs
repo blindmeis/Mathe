@@ -10,6 +10,7 @@ namespace Mathe1.Common
     {
         Addition,
         Subtraktion,
-        Multiplikation
+        Multiplikation,
+        Division
     }
 }

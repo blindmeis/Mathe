@@ -39,6 +39,10 @@
                 <views:ModulView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodel:DivisionModul}">
+                <views:ModulView/>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewmodel:AufgabeViewmodel}">
                 <views:AufgabeView/>
             </DataTemplate>

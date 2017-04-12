@@ -70,6 +70,9 @@
                             <DataTrigger Binding="{Binding Operation}" Value="{x:Static common:Operationen.Multiplikation}">
                                 <Setter Property="Content" Value="x"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Operation}" Value="{x:Static common:Operationen.Division}">
+                                <Setter Property="Content" Value=":"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Label.Style>

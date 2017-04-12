@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,22 @@ namespace Mathe1.Viewmodel
     public class AufgabeViewmodel : ViewmodelBase, IAufgabe
     {
         private static readonly Random Zufall = new Random();
-        
+        private static readonly int AdditionLeichtZahlenraum;
+        private static readonly int AdditionNormalZahlenraum;
+        private static readonly int AdditionSchwerZahlenraum;
+
+        private static readonly int SubtraktionLeichtZahlenraum;
+        private static readonly int SubtraktionNormalZahlenraum;
+        private static readonly int SubtraktionSchwerZahlenraum;
+
+        private static readonly int MultiplikationLeichtZahlenraum;
+        private static readonly int MultiplikationNormalZahlenraum;
+        private static readonly int MultiplikationSchwerZahlenraum;
+
+        private static readonly int DivisionLeichtZahlenraum;
+        private static readonly int DivisionNormalZahlenraum;
+        private static readonly int DivisionSchwerZahlenraum;
+
         private int? _operator1;
         private int? _operator2;
         private int? _result;
@@ -27,9 +43,25 @@ namespace Mathe1.Viewmodel
         private string _lastValidatedOperator2;
         private string _lastValidatedResult;
 
-        public AufgabeViewmodel()
+        static AufgabeViewmodel()
         {
-            
+           AdditionLeichtZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("AdditionLeichtZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["AdditionLeichtZahlenraum"]): 10;
+            AdditionNormalZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("AdditionNormalZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["AdditionNormalZahlenraum"]): 100;
+            AdditionSchwerZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("AdditionSchwerZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["AdditionSchwerZahlenraum"]): 1000;
+
+            SubtraktionLeichtZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("SubtraktionLeichtZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["SubtraktionLeichtZahlenraum"]): 20;
+            SubtraktionNormalZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("SubtraktionNormalZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["SubtraktionNormalZahlenraum"]): 100;
+            SubtraktionSchwerZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("SubtraktionSchwerZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["SubtraktionSchwerZahlenraum"]): 1000;
+
+            MultiplikationLeichtZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("MultiplikationLeichtZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["MultiplikationLeichtZahlenraum"]): 10;
+            MultiplikationNormalZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("MultiplikationNormalZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["MultiplikationNormalZahlenraum"]): 15;
+            MultiplikationSchwerZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("MultiplikationSchwerZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["MultiplikationSchwerZahlenraum"]): 20;
+
+            DivisionLeichtZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("DivisionLeichtZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["DivisionLeichtZahlenraum"]): 10;
+            DivisionNormalZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("DivisionNormalZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["DivisionNormalZahlenraum"]): 15;
+            DivisionSchwerZahlenraum = ConfigurationManager.AppSettings.AllKeys.Contains("DivisionSchwerZahlenraum") ? Convert.ToInt32(ConfigurationManager.AppSettings["DivisionSchwerZahlenraum"]): 20;
+
+         
         }
 
         public AufgabeViewmodel(Operationen operation, int schwierigkeit)
@@ -141,11 +173,13 @@ namespace Mathe1.Viewmodel
             switch (Operation)
             {
                 case Operationen.Addition:
-                    return schwierigkeit == 0 ? 10 : (schwierigkeit == 1 ? 20 : 50);
+                    return schwierigkeit == 0 ? AdditionLeichtZahlenraum : (schwierigkeit == 1 ? AdditionNormalZahlenraum : AdditionSchwerZahlenraum);
                 case Operationen.Subtraktion:
-                    return schwierigkeit == 0 ? 15 : (schwierigkeit == 1 ? 25 : 50);
+                    return schwierigkeit == 0 ? SubtraktionLeichtZahlenraum : (schwierigkeit == 1 ? SubtraktionNormalZahlenraum : SubtraktionSchwerZahlenraum);
                 case Operationen.Multiplikation:
-                    return 10;
+                    return schwierigkeit == 0 ? MultiplikationLeichtZahlenraum : (schwierigkeit == 1 ? MultiplikationNormalZahlenraum : MultiplikationSchwerZahlenraum);
+                case Operationen.Division:
+                    return schwierigkeit == 0 ? DivisionLeichtZahlenraum : (schwierigkeit == 1 ? DivisionNormalZahlenraum : DivisionSchwerZahlenraum); ;
             }
 
             return 0;
@@ -194,6 +228,15 @@ namespace Mathe1.Viewmodel
                             Operator2 = null;
                     }
                     break;
+                case Operationen.Division:
+                    while (Operator2 == null)
+                    {
+                        Operator2 = Zufall.Next(Zahlenraum);
+                        if (Operator2 == 0|| CheckResult == null)
+                            Operator2 = null;
+                    }
+                    Operator1 = Operator1*Operator2;
+                    break;
             }
         }
 
@@ -220,8 +263,8 @@ namespace Mathe1.Viewmodel
             ObSuccess = CheckResult == Result;
 
             //Set LastValidated Values
-            LastValidatedOperator1 = Operator1.HasValue ? Operator1.Value.ToString() : "";
-            LastValidatedOperator2 = Operator2.HasValue ? Operator2.Value.ToString() : "";
+            LastValidatedOperator1 = Operator1?.ToString() ?? "";
+            LastValidatedOperator2 = Operator2?.ToString() ?? "";
             LastValidatedResult = Result.Value.ToString();
 
             HandleLockCounterStuff();
@@ -286,6 +329,10 @@ namespace Mathe1.Viewmodel
                     case Operationen.Multiplikation:
                         if (Operator1.HasValue && Operator2.HasValue)
                             return Operator1 * Operator2;
+                        break;
+                    case Operationen.Division:
+                        if (Operator1.HasValue && Operator2.HasValue)
+                            return Operator1 / Operator2;
                         break;
                 }
 
@@ -398,6 +445,14 @@ namespace Mathe1.Viewmodel
                             LockResult = Result / Operator1;
                         if (ObResultUnbekannt)
                             LockResult = Operator1 * Operator2;
+                        break;
+                    case Operationen.Division:
+                        if (ObOperator1Unbekannt)
+                            LockResult = Result * Operator2;
+                        if (ObOperator2Unbekannt)
+                            LockResult = Operator1 / Result;
+                        if (ObResultUnbekannt)
+                            LockResult = Operator1 / Operator2;
                         break;
                 }
                 OnPropertyChanged("ObFalsch");
