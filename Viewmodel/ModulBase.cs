@@ -67,6 +67,8 @@ namespace Mathe1.Viewmodel
                 return;
 
             CreateAufgaben();
+
+            _lazyNeueAufgabenCommand.Value.RaiseCanExecuteChanged();
         }
 
         public ICommand PrüfenCommand { get { return _lazyPrüfenCommand.Value; } }
@@ -105,7 +107,18 @@ namespace Mathe1.Viewmodel
                     i--;
                     continue;
                 }
-
+                aufgabe.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == "Operator1" 
+                         || args.PropertyName == "Operator2" 
+                         || args.PropertyName == "Result"
+                         || args.PropertyName == "ObLocked")
+                    {
+                        _lazyPrüfenCommand.Value.RaiseCanExecuteChanged();
+                        _lazyNeueAufgabenCommand.Value.RaiseCanExecuteChanged();
+                    }
+                   
+                };
                 Aufgaben.Add(aufgabe);
             }
         }
