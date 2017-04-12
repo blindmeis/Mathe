@@ -174,7 +174,7 @@ namespace Mathe1.Viewmodel
                     while (Operator2==null)
                     {
                         Operator2 = Zufall.Next(Zahlenraum);
-                        if (CheckResult == null || CheckResult > Zahlenraum + 5)
+                        if (CheckResult == null || CheckResult > Zahlenraum * 2)
                             Operator2 = null;
                     }
                     break;
